@@ -1,0 +1,80 @@
+.forecast-container {
+  margin: 20px;
+  background-color: hsl(51, 100%, 89%);
+  border: 3px solid #0660c0; 
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.forecast-table {
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 10px;
+  justify-content: center;
+}
+
+.forecast-table .forecast-cell {
+  width: 190px; 
+  box-sizing: border-box; 
+  padding: 5px;
+  border: 3px solid #007bff; 
+  background-color: #e8faff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 4px 2px 13px rgb(9, 18, 150);
+}
+
+.forecast-table .date {
+  font-size: 1.2em;
+  color: #000000;
+  font-weight: 700;
+  margin: 6px;
+}
+
+.forecast-cell .icon span{
+  font-size: 25px;
+}
+
+.forecast-table .temperature {
+  font-size: 1em;
+  font-weight: bold;
+}
+
+.forecast-table .energy {
+  color: #007bff;
+  font-weight: bold;
+}
+
+
+
+/* @media (max-width: 1000px) {
+  .forecast-table .forecast-cell {
+    width: calc(14.28% - 10px);
+  }
+}
+
+@media (max-width: 800px) {
+  .forecast-table .forecast-cell {
+    width: calc(25% - 10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .forecast-table .forecast-cell {
+    width: calc(33.33% - 10px);
+  }
+}
+
+@media (max-width: 400px) {
+  .forecast-table .forecast-cell {
+    width: calc(100% - 10px);
+  }
+} */

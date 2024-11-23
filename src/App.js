@@ -1,6 +1,8 @@
+// App.js
 import React, { useState, useEffect } from 'react';
 import { getWeatherForecast, getWeeklySummary } from './services/weatherService';
-import WeatherIcon from './utils/weatherIcons';
+import ForecastWeather from './components/forecastWeather';
+import WeeklySummary from './components/weeklySummary';
 
 const App = () => {
   const [coordinates, setCoordinates] = useState(null);
@@ -57,15 +59,7 @@ const App = () => {
     }
   }, [coordinates]);
   
-  function convertSecondsToTime(seconds) {
-    const hours = Math.floor(seconds / 3600);
-    seconds %= 3600;
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = Math.round(seconds % 60);
 
-    // Zwracamy wynik w formacie HH:MM:SS
-    return `${hours}h ${minutes}m ${remainingSeconds}s`;
-  }
 
   return (
     <div>
@@ -74,54 +68,24 @@ const App = () => {
 
       {coordinates ? (
         <div>
-          <p><strong>Współrzędne:</strong></p>
-          <p>Szerokość geograficzna: {coordinates.latitude}</p>
-          <p>Długość geograficzna: {coordinates.longitude}</p>
+          <p><strong>Współrzędne geograficzne:</strong></p>
+          <p>{coordinates.latitude !== 0 ? `${Math.abs(coordinates.latitude)}°
+          ${coordinates.latitude < 0 ? 'S' : 'N'}` : '0°'} /  
+        {coordinates.longitude !== 0 ? `${Math.abs(coordinates.longitude)}°
+          ${coordinates.longitude < 0 ? 'W' : 'E'}` : '0°'}</p>
         </div>
       ) : (
         <p>Ładowanie współrzędnych...</p>
       )}
 
       {forecastWeather ? (
-        <div>
-          <h2>Prognoza na 7 dni:</h2>
-          <table>
-            <thead>
-              <tr>
-                {forecastWeather.days.map((day, index) => (
-                  <th key={index}>{new Date(day.date).toLocaleDateString()}</th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                {forecastWeather.days.map((day, index) => (
-                  <td key={index}>
-                    <div> <WeatherIcon code={day.weatherCode} /></div>
-                    <div>Temp: {day.minTemperature}{forecastWeather.daily_units.minTemperature} / {day.maxTemperature}{forecastWeather.daily_units.maxTemperature}</div>
-                    <div>Szacowana energia: {day.estimatedEnergy} {forecastWeather.daily_units.estimatedEnergy}</div>
-                  </td>
-                ))}
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <ForecastWeather forecastWeather={forecastWeather} />
       ) : (
         coordinates && <p>Ładowanie prognozy pogody...</p>
       )}
 
       {weeklySummary ? (
-        <div>
-          <h2>Podsumowanie tygodnia:</h2>
-          <p><strong>Skrajne temperatury w tym tygodniu:</strong> {weeklySummary.weekly_summary.minTemperature}{weeklySummary.weekly_summary_units.minTemperature} - {weeklySummary.weekly_summary.maxTemperature}{weeklySummary.weekly_summary_units.maxTemperature}</p>
-          <p><strong>Średnie ciśnienie:</strong> {weeklySummary.weekly_summary.averageSurfacePressure} {weeklySummary.weekly_summary_units.averageSurfacePressure}</p>
-          <p><strong>Średni czas ekspozycji na słońce:</strong> { 
-            weeklySummary.weekly_summary_units.averageSunshineDuration === "s" ? 
-              convertSecondsToTime(weeklySummary.weekly_summary.averageSunshineDuration) : 
-              `${weeklySummary.weekly_summary.averageSunshineDuration} ${weeklySummary.weekly_summary_units.averageSunshineDuration}`
-          }</p>
-          <p><strong>Podsumowanie pogody:</strong> {weeklySummary.weekly_summary.weatherSummary}</p>
-        </div>
+        <WeeklySummary weeklySummary={weeklySummary} />
       ) : (
         coordinates && <p>Ładowanie podsumowania pogody...</p>
       )}
