@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getWeatherForecast, getWeeklySummary } from './services/weatherService';
+import WeatherIcon from './utils/weatherIcons';
 
 const App = () => {
   const [coordinates, setCoordinates] = useState(null);
@@ -37,7 +38,6 @@ const App = () => {
 
       const fetchWeather = async () => {
         try {
-          console.log('STARTTTT1');
           const forecast = await getWeatherForecast(latitude, longitude);
           setForecastWeather(forecast);
         } catch (error) {
@@ -45,7 +45,6 @@ const App = () => {
           setError('Błąd podczas pobierania prognozy pogody.');
         }
         try {
-          console.log('STARTTTT2');
           const summary = await getWeeklySummary(latitude, longitude);
           setWeeklySummary(summary)
         } catch (error) {
@@ -58,10 +57,19 @@ const App = () => {
     }
   }, [coordinates]);
   
+  function convertSecondsToTime(seconds) {
+    const hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    const minutes = Math.floor(seconds / 60);
+    const remainingSeconds = Math.round(seconds % 60);
+
+    // Zwracamy wynik w formacie HH:MM:SS
+    return `${hours}h ${minutes}m ${remainingSeconds}s`;
+  }
 
   return (
     <div>
-      <h1>Weather App</h1>
+      <h1>Prognoza pogody</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {coordinates ? (
@@ -76,8 +84,27 @@ const App = () => {
 
       {forecastWeather ? (
         <div>
-          <h2>Prognoza pogody:</h2>
-          <pre>{JSON.stringify(forecastWeather, null, 2)}</pre>
+          <h2>Prognoza na 7 dni:</h2>
+          <table>
+            <thead>
+              <tr>
+                {forecastWeather.days.map((day, index) => (
+                  <th key={index}>{new Date(day.date).toLocaleDateString()}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                {forecastWeather.days.map((day, index) => (
+                  <td key={index}>
+                    <div> <WeatherIcon code={day.weatherCode} /></div>
+                    <div>Temp: {day.minTemperature}{forecastWeather.daily_units.minTemperature} / {day.maxTemperature}{forecastWeather.daily_units.maxTemperature}</div>
+                    <div>Szacowana energia: {day.estimatedEnergy} {forecastWeather.daily_units.estimatedEnergy}</div>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </div>
       ) : (
         coordinates && <p>Ładowanie prognozy pogody...</p>
@@ -85,8 +112,15 @@ const App = () => {
 
       {weeklySummary ? (
         <div>
-          <h2>Podsumowanie pogody:</h2>
-          <pre>{JSON.stringify(weeklySummary, null, 2)}</pre>
+          <h2>Podsumowanie tygodnia:</h2>
+          <p><strong>Skrajne temperatury w tym tygodniu:</strong> {weeklySummary.weekly_summary.minTemperature}{weeklySummary.weekly_summary_units.minTemperature} - {weeklySummary.weekly_summary.maxTemperature}{weeklySummary.weekly_summary_units.maxTemperature}</p>
+          <p><strong>Średnie ciśnienie:</strong> {weeklySummary.weekly_summary.averageSurfacePressure} {weeklySummary.weekly_summary_units.averageSurfacePressure}</p>
+          <p><strong>Średni czas ekspozycji na słońce:</strong> { 
+            weeklySummary.weekly_summary_units.averageSunshineDuration === "s" ? 
+              convertSecondsToTime(weeklySummary.weekly_summary.averageSunshineDuration) : 
+              `${weeklySummary.weekly_summary.averageSunshineDuration} ${weeklySummary.weekly_summary_units.averageSunshineDuration}`
+          }</p>
+          <p><strong>Podsumowanie pogody:</strong> {weeklySummary.weekly_summary.weatherSummary}</p>
         </div>
       ) : (
         coordinates && <p>Ładowanie podsumowania pogody...</p>
@@ -94,5 +128,4 @@ const App = () => {
     </div>
   );
 };
-
 export default App;
