@@ -110,28 +110,28 @@ const App = () => {
   return (
     
     <div>
-      
-
       {/* Sekcja przełącznika trybu jasnego i ciemnego */}
       <div>
         <ThemeToggle onToggle={handleThemeToggle} />
       </div>
-      
+      {/* Sekcja sposobu wyboru współrzędnych*/}
       <div className='choice'>
         <button onClick={() => setLocationMode('current')}>Obecna lokalizacja</button>
-        <button onClick={toggleManualInput}>Ręczne współrzędne</button>
-        <button onClick={handleMapShowing}>Pokaż mapę</button>
+        <button onClick={toggleManualInput}>{showManualInput ? "Ukryj ręczne współrzędne" : "Pokaż ręczne współrzędne"}</button>
+        <button onClick={handleMapShowing}>{showMap ? "Ukryj mapę" :"Pokaż mapę"}</button>
       </div>
+
+      {/* Sekcja mapy*/}
       {showMap ? 
-      <div>
-      <MapWithCoordinates setCoordinates={setCoordinates}/>
-      </div> : ""
+        <div>
+          <MapWithCoordinates setCoordinates={setCoordinates}/>
+        </div> : ""
       }
       
 
-      {/* Wybór lokalizacji */}
+      {/* Wpisywanie lokalizacji */}
       {showManualInput && (
-        <div>
+        <div className="input-info-container">
           <div className="input-coordinates-container">
             <label>
               Wprowadź szerokość geograficzną (latitude):
@@ -157,7 +157,10 @@ const App = () => {
         </div>
       </div>
       )}
+
       {error ? <p class="error-message">Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</p> : ""}
+      
+      {/* Wypisywanie współrzędnych*/}
       {coordinates ? (
         <div>
         <p id='coordinates-title'><strong>Współrzędne geograficzne:</strong></p>
@@ -176,17 +179,17 @@ const App = () => {
       )}
 
       
-
       <h1>Prognoza pogody</h1>
       {error && <p class="error-message">{error}</p>}
 
-
+      {/* Tabela z opisem dni tygdnia */}
       {forecastWeather && !error ? (
         <ForecastWeather forecastWeather={forecastWeather} isLightMode={isLightMode} />
       ) : (
         coordinates && <p>Ładowanie prognozy pogody...</p>
       )}
 
+      {/* Sekcja podsumowania */}
       {weeklySummary&& !error ? (
         <WeeklySummary weeklySummary={weeklySummary} isLightMode={isLightMode} />
       ) : (

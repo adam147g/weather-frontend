@@ -34,7 +34,7 @@ const MapComponent = ({ setCoordinates }) => {
             <MapContainer
                 center={[51.505, -0.09]} // Default center (can be dynamic)
                 zoom={13}
-                style={{ height: '400px', width: '100%' }}
+                style={{ height: '400px', width: '100%', marginTop: '30px'}}
             >
                 <TileLayer
                     url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"

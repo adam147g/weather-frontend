@@ -8,9 +8,13 @@
     --button-text-light: #00366f;
     --button-text-dark: #ffffff;
     --input-background-light: hsl(208, 100%, 57%, 10%);
-    --input-background-dark: hsl(208, 100%, 57%, 20%);
+    --input-background-dark: hsla(208, 100%, 91%, 0.2);
     --border-color-light: #0660c0;
     --border-color-dark: #ffffff;
+    --text-shadow-color-light: 0px 0px 2px #000000;
+    --text-shadow-color-dark: 0px 0px 3px #ffffff;
+    --input-info-background-light: rgba(255, 255, 255, 0.432);
+    --input-info-background-dark: rgba(0, 0, 0, 0.301);
   }
   
   .light-mode {
@@ -20,6 +24,8 @@
     --button-text: var(--button-text-light);
     --input-background: var(--input-background-light);
     --border-color: var(--border-color-light);
+    --text-shadow-color: var(--text-shadow-color-light);
+    --input-info-background: var(--input-info-background-light);
   }
   
   .dark-mode {
@@ -29,6 +35,8 @@
     --button-text: var(--button-text-dark);
     --input-background: var(--input-background-dark);
     --border-color: var(--border-color-dark);
+    --text-shadow-color: var(--text-shadow-color-dark);
+    --input-info-background: var(--input-info-background-dark);
   }
   
   body {
@@ -42,8 +50,10 @@
   }
   
   #coordinates {
-    font-size: 20px;
+    font-size: 25px;
     color: var(--text-color);
+    text-shadow: var(--text-shadow-color);
+    font-weight: 600;
   }
   
   .choice {
@@ -66,7 +76,12 @@
     color: var(--button-text);
     border: 3px solid var(--border-color);
   }
-  
+  .input-info-container{
+    background-color: var(--input-info-background);
+    padding-bottom: 10px;
+  }
+
+
   .input-coordinates-container {
     margin: 15px;
   }
