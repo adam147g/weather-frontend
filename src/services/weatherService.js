@@ -1,4 +1,4 @@
-const apiUrl = process.env.API_URL || "http://localhost:8080/";
+const apiUrl = "https://weather-backend-j0q9.onrender.com/";
 
 const getWeatherForecast = async (latitude, longitude) => {
   try {
