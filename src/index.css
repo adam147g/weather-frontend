@@ -33,3 +33,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#error-message {
+  color: red;
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 2em;
+  margin: 0;
+  
+  z-index: 9999;
+}

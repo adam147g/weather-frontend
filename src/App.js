@@ -10,7 +10,9 @@ const App = () => {
   const [forecastWeather, setForecastWeather] = useState(null);
   const [weeklySummary, setWeeklySummary] = useState(null);
   const [error, setError] = useState(null);
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(true);
+  const [locationMode, setLocationMode] = useState('manual');
+  const [manualCoordinates, setManualCoordinates] = useState({ latitude: '', longitude: '' });
 
   useEffect(() => {
     document.body.classList.toggle('light', isLightMode);
@@ -19,6 +21,7 @@ const App = () => {
 
 
   useEffect(() => {
+    
     // Funkcja do uzyskania współrzędnych geograficznych
     const getLocation = () => {
       if (navigator.geolocation) {
@@ -39,8 +42,12 @@ const App = () => {
       }
     };
 
-    getLocation();
-  }, []);
+    if (locationMode === 'current') {
+      getLocation();
+    } else if (locationMode === 'manual' && manualCoordinates.latitude && manualCoordinates.longitude) {
+      setCoordinates(manualCoordinates);
+    }
+  }, [locationMode, manualCoordinates]);
 
   useEffect(() => {
     if (coordinates) {
@@ -50,6 +57,7 @@ const App = () => {
         try {
           const forecast = await getWeatherForecast(latitude, longitude);
           setForecastWeather(forecast);
+          setError(null);
         } catch (error) {
           console.error('Błąd podczas pobierania pogody:', error.message);
           setError('Błąd podczas pobierania prognozy pogody.');
@@ -57,6 +65,7 @@ const App = () => {
         try {
           const summary = await getWeeklySummary(latitude, longitude);
           setWeeklySummary(summary)
+          setError(null);
         } catch (error) {
           console.error('Błąd podczas pobierania podsumowania pogody:', error.message);
           setError('Błąd podczas pobierania podsumowania pogody.');
@@ -70,22 +79,54 @@ const App = () => {
   const handleThemeToggle = (isLightMode) => {
     setIsLightMode(isLightMode);
   };
+
+  const handleManualCoordinatesChange = (e) => {
+    const { name, value } = e.target;
+    setManualCoordinates((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   
-
-
   return (
     
     <div>
       {/* Sekcja przełącznika trybu jasnego i ciemnego */}
       <div>
-        <h1>Moon & Sun</h1>
         <ThemeToggle onToggle={handleThemeToggle} />
         <p>Tryb: {isLightMode ? 'Jasny' : 'Ciemny'}</p>
       </div>
       
-      <h1>Prognoza pogody</h1>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <div>
+        <button onClick={() => setLocationMode('current')}>Obecna lokalizacja</button>
+        <button onClick={() => setLocationMode('manual')}>Ręczne współrzędne</button>
+      </div>
 
+      {/* Wybór lokalizacji */}
+      {locationMode === 'manual' ? (
+        <div>
+          <label>
+            Wprowadź szerokość geograficzną (lat):
+            <input
+              type="number"
+              name="latitude"
+              value={manualCoordinates.latitude}
+              onChange={handleManualCoordinatesChange}
+            />
+          </label>
+          <label>
+            długość geograficzną (lon):
+            <input
+              type="number"
+              name="longitude"
+              value={manualCoordinates.longitude}
+              onChange={handleManualCoordinatesChange}
+            />
+          </label>
+        </div>
+      ) : null}
+      {error ? <h2 style={{color: "red"}}>Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</h2> : ""}
       {coordinates ? (
         <div>
           <p><strong>Współrzędne geograficzne:</strong></p>
@@ -98,13 +139,19 @@ const App = () => {
         <p>Ładowanie współrzędnych...</p>
       )}
 
-      {forecastWeather ? (
+      
+
+      <h1>Prognoza pogody</h1>
+      {error && <p id="error-message">{error}</p>}
+
+
+      {forecastWeather && !error ? (
         <ForecastWeather forecastWeather={forecastWeather} isLightMode={isLightMode} />
       ) : (
         coordinates && <p>Ładowanie prognozy pogody...</p>
       )}
 
-      {weeklySummary ? (
+      {weeklySummary&& !error ? (
         <WeeklySummary weeklySummary={weeklySummary} />
       ) : (
         coordinates && <p>Ładowanie podsumowania pogody...</p>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './themeToggle.css'; // Styl przełącznika w oddzielnym pliku
 
 const ThemeToggle = ({ onToggle }) => {
-  const [isLightMode, setIsLightMode] = useState(false);
+  const [isLightMode, setIsLightMode] = useState(true);
 
   const handleToggle = () => {
     const newMode = !isLightMode;
