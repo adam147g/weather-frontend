@@ -5,7 +5,7 @@ import ForecastWeather from './components/forecastWeather';
 import WeeklySummary from './components/weeklySummary';
 import ThemeToggle from './components/themeToggle';
 import MapWithCoordinates from './components/mapComponent.js';
-
+import './App.css'; 
 
 const App = () => {
   const [coordinates, setCoordinates] = useState(null);
@@ -104,10 +104,9 @@ const App = () => {
       {/* Sekcja przełącznika trybu jasnego i ciemnego */}
       <div>
         <ThemeToggle onToggle={handleThemeToggle} />
-        <p>Tryb: {isLightMode ? 'Jasny' : 'Ciemny'}</p>
       </div>
       
-      <div>
+      <div className='choice'>
         <button onClick={() => setLocationMode('current')}>Obecna lokalizacja</button>
         <button onClick={() => setLocationMode('manual')}>Ręczne współrzędne</button>
         <button onClick={handleMapShowing}>Pokaż mapę</button>
@@ -122,17 +121,21 @@ const App = () => {
       {/* Wybór lokalizacji */}
       {locationMode === 'manual' ? (
         <div>
-          <label>
-            Wprowadź szerokość geograficzną (lat):
-            <input
-              type="number"
-              name="latitude"
-              value={manualCoordinates.latitude}
-              onChange={handleManualCoordinatesChange}
-            />
-          </label>
-          <label>
-            długość geograficzną (lon):
+          <div className="input-coordinates-container">
+            <label>
+              Wprowadź szerokość geograficzną (latitude):
+              <input
+                type="number"
+                name="latitude"
+                value={manualCoordinates.latitude}
+                onChange={handleManualCoordinatesChange}
+              />
+            </label>
+            
+          </div>
+          <div className="input-coordinates-container">
+            <label>
+            Wprowadź długość geograficzną (longitude):
             <input
               type="number"
               name="longitude"
@@ -141,12 +144,13 @@ const App = () => {
             />
           </label>
         </div>
+      </div>
       ) : null}
-      {error ? <h2 style={{color: "red"}}>Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</h2> : ""}
+      {error ? <p class="error-message">Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</p> : ""}
       {coordinates ? (
         <div>
-        <p><strong>Współrzędne geograficzne:</strong></p>
-        <p>
+        <p id='coordinates-title'><strong>Współrzędne geograficzne:</strong></p>
+        <p id='coordinates'>
           {coordinates.latitude !== 0 
             ? `${Math.abs(coordinates.latitude).toFixed(5)}° ${coordinates.latitude < 0 ? 'S' : 'N'}` 
             : '0°'} /  
@@ -163,7 +167,7 @@ const App = () => {
       
 
       <h1>Prognoza pogody</h1>
-      {error && <p id="error-message">{error}</p>}
+      {error && <p class="error-message">{error}</p>}
 
 
       {forecastWeather && !error ? (
