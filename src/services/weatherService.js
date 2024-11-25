@@ -1,7 +1,8 @@
+const apiUrl = process.env.API_URL || "http://localhost:8080/";
 
 const getWeatherForecast = async (latitude, longitude) => {
   try {
-    const url = `http://localhost:8080/api/weather/7-day-forecast?latitude=${latitude}&longitude=${longitude}`;
+    const url = `${apiUrl}api/weather/7-day-forecast?latitude=${latitude}&longitude=${longitude}`;
     const response = await fetch(url);
 
     if (!response.ok) {
@@ -20,7 +21,7 @@ export { getWeatherForecast };
 
 const getWeeklySummary = async (latitude, longitude) => {
   try {
-    const url = `http://localhost:8080/api/weather/weekly-summary?latitude=${latitude}&longitude=${longitude}`;
+    const url = `${apiUrl}api/weather/weekly-summary?latitude=${latitude}&longitude=${longitude}`;
     const response = await fetch(url);
 
     if (!response.ok) {
