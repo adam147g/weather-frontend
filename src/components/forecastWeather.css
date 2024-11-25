@@ -1,12 +1,26 @@
+:root {
+  --background-color-light: hsl(51, 100%, 89%, 30%);
+  --background-color-dark: hsla(0, 100%, 14%, 0.3);
+}
+
 .forecast-container {
   margin: 20px;
-  background-color: hsl(51, 100%, 89%);
   border: 3px solid #0660c0; 
+}
+
+.forecast-container.light {
+  background-color: var(--background-color-light)
+}
+
+.forecast-container.dark {
+  background-color: var(--background-color-dark)
 }
 
 h2 {
   text-align: center;
   margin-bottom: 20px;
+  color: #00366f;
+  text-shadow: 0px 0px 10px rgb(255, 255, 255);
 }
 
 .forecast-table {
@@ -21,7 +35,7 @@ h2 {
   box-sizing: border-box; 
   padding: 5px;
   border: 3px solid #007bff; 
-  background-color: #e8faff;
+  background-color: hsl(193, 100%, 95%, 70%);
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -34,47 +48,24 @@ h2 {
 
 .forecast-table .date {
   font-size: 1.2em;
-  color: #000000;
+  color: #0003b1;
   font-weight: 700;
   margin: 6px;
 }
 
 .forecast-cell .icon span{
-  font-size: 25px;
+  font-size: 50px;
 }
 
 .forecast-table .temperature {
   font-size: 1em;
   font-weight: bold;
+  color: #00366f
 }
 
 .forecast-table .energy {
   color: #007bff;
   font-weight: bold;
+  display: flex;
+  flex-direction: column;
 }
-
-
-
-/* @media (max-width: 1000px) {
-  .forecast-table .forecast-cell {
-    width: calc(14.28% - 10px);
-  }
-}
-
-@media (max-width: 800px) {
-  .forecast-table .forecast-cell {
-    width: calc(25% - 10px);
-  }
-}
-
-@media (max-width: 600px) {
-  .forecast-table .forecast-cell {
-    width: calc(33.33% - 10px);
-  }
-}
-
-@media (max-width: 400px) {
-  .forecast-table .forecast-cell {
-    width: calc(100% - 10px);
-  }
-} */

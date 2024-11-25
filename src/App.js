@@ -3,12 +3,20 @@ import React, { useState, useEffect } from 'react';
 import { getWeatherForecast, getWeeklySummary } from './services/weatherService';
 import ForecastWeather from './components/forecastWeather';
 import WeeklySummary from './components/weeklySummary';
+import ThemeToggle from './components/themeToggle';
 
 const App = () => {
   const [coordinates, setCoordinates] = useState(null);
   const [forecastWeather, setForecastWeather] = useState(null);
   const [weeklySummary, setWeeklySummary] = useState(null);
   const [error, setError] = useState(null);
+  const [isLightMode, setIsLightMode] = useState(false);
+
+  useEffect(() => {
+    document.body.classList.toggle('light', isLightMode);
+    document.body.classList.toggle('dark', !isLightMode);
+  }, [isLightMode]);
+
 
   useEffect(() => {
     // Funkcja do uzyskania współrzędnych geograficznych
@@ -58,11 +66,23 @@ const App = () => {
       fetchWeather();
     }
   }, [coordinates]);
+
+  const handleThemeToggle = (isLightMode) => {
+    setIsLightMode(isLightMode);
+  };
   
 
 
   return (
+    
     <div>
+      {/* Sekcja przełącznika trybu jasnego i ciemnego */}
+      <div>
+        <h1>Moon & Sun</h1>
+        <ThemeToggle onToggle={handleThemeToggle} />
+        <p>Tryb: {isLightMode ? 'Jasny' : 'Ciemny'}</p>
+      </div>
+      
       <h1>Prognoza pogody</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
 
@@ -79,7 +99,7 @@ const App = () => {
       )}
 
       {forecastWeather ? (
-        <ForecastWeather forecastWeather={forecastWeather} />
+        <ForecastWeather forecastWeather={forecastWeather} isLightMode={isLightMode} />
       ) : (
         coordinates && <p>Ładowanie prognozy pogody...</p>
       )}
