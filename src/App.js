@@ -4,6 +4,8 @@ import { getWeatherForecast, getWeeklySummary } from './services/weatherService'
 import ForecastWeather from './components/forecastWeather';
 import WeeklySummary from './components/weeklySummary';
 import ThemeToggle from './components/themeToggle';
+import MapWithCoordinates from './components/mapComponent.js';
+
 
 const App = () => {
   const [coordinates, setCoordinates] = useState(null);
@@ -13,6 +15,7 @@ const App = () => {
   const [isLightMode, setIsLightMode] = useState(true);
   const [locationMode, setLocationMode] = useState('manual');
   const [manualCoordinates, setManualCoordinates] = useState({ latitude: '', longitude: '' });
+  const [showMap, setShowMap] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle('light', isLightMode);
@@ -88,10 +91,16 @@ const App = () => {
     }));
   };
 
+  const handleMapShowing = () => {
+    setShowMap(!showMap);
+  };
+
   
   return (
     
     <div>
+      
+
       {/* Sekcja przełącznika trybu jasnego i ciemnego */}
       <div>
         <ThemeToggle onToggle={handleThemeToggle} />
@@ -101,7 +110,14 @@ const App = () => {
       <div>
         <button onClick={() => setLocationMode('current')}>Obecna lokalizacja</button>
         <button onClick={() => setLocationMode('manual')}>Ręczne współrzędne</button>
+        <button onClick={handleMapShowing}>Pokaż mapę</button>
       </div>
+      {showMap ? 
+      <div>
+      <MapWithCoordinates setCoordinates={setCoordinates}/>
+      </div> : ""
+      }
+      
 
       {/* Wybór lokalizacji */}
       {locationMode === 'manual' ? (
@@ -129,12 +145,17 @@ const App = () => {
       {error ? <h2 style={{color: "red"}}>Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</h2> : ""}
       {coordinates ? (
         <div>
-          <p><strong>Współrzędne geograficzne:</strong></p>
-          <p>{coordinates.latitude !== 0 ? `${Math.abs(coordinates.latitude)}°
-          ${coordinates.latitude < 0 ? 'S' : 'N'}` : '0°'} /  
-        {coordinates.longitude !== 0 ? `${Math.abs(coordinates.longitude)}°
-          ${coordinates.longitude < 0 ? 'W' : 'E'}` : '0°'}</p>
-        </div>
+        <p><strong>Współrzędne geograficzne:</strong></p>
+        <p>
+          {coordinates.latitude !== 0 
+            ? `${Math.abs(coordinates.latitude).toFixed(5)}° ${coordinates.latitude < 0 ? 'S' : 'N'}` 
+            : '0°'} /  
+          {coordinates.longitude !== 0 
+            ? `${Math.abs(coordinates.longitude).toFixed(5)}° ${coordinates.longitude < 0 ? 'W' : 'E'}` 
+            : '0°'}
+        </p>
+      </div>
+      
       ) : (
         <p>Ładowanie współrzędnych...</p>
       )}
