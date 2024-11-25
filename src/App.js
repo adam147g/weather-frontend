@@ -16,6 +16,7 @@ const App = () => {
   const [locationMode, setLocationMode] = useState('manual');
   const [manualCoordinates, setManualCoordinates] = useState({ latitude: '', longitude: '' });
   const [showMap, setShowMap] = useState(false);
+  const [showManualInput, setShowManualInput] = useState(false);
 
   useEffect(() => {
     document.body.classList.toggle('light', isLightMode);
@@ -95,6 +96,16 @@ const App = () => {
     setShowMap(!showMap);
   };
 
+  const toggleManualInput = () => {
+    setShowManualInput((prev) => !prev);
+    setLocationMode('manual');
+  };
+
+  useEffect(() => {
+    document.body.className = isLightMode ? 'light-mode' : 'dark-mode';
+  }, [isLightMode]);
+
+
   
   return (
     
@@ -108,7 +119,7 @@ const App = () => {
       
       <div className='choice'>
         <button onClick={() => setLocationMode('current')}>Obecna lokalizacja</button>
-        <button onClick={() => setLocationMode('manual')}>Ręczne współrzędne</button>
+        <button onClick={toggleManualInput}>Ręczne współrzędne</button>
         <button onClick={handleMapShowing}>Pokaż mapę</button>
       </div>
       {showMap ? 
@@ -119,7 +130,7 @@ const App = () => {
       
 
       {/* Wybór lokalizacji */}
-      {locationMode === 'manual' ? (
+      {showManualInput && (
         <div>
           <div className="input-coordinates-container">
             <label>
@@ -145,7 +156,7 @@ const App = () => {
           </label>
         </div>
       </div>
-      ) : null}
+      )}
       {error ? <p class="error-message">Podaj współrzędne w postaci liczb: szerokość geograficzna [-90, 90], długość geograficzna [-180, 180]</p> : ""}
       {coordinates ? (
         <div>
@@ -177,7 +188,7 @@ const App = () => {
       )}
 
       {weeklySummary&& !error ? (
-        <WeeklySummary weeklySummary={weeklySummary} />
+        <WeeklySummary weeklySummary={weeklySummary} isLightMode={isLightMode} />
       ) : (
         coordinates && <p>Ładowanie podsumowania pogody...</p>
       )}

@@ -19,12 +19,12 @@ body {
   background-repeat: no-repeat; 
 }
 
-body.light{
+body.light-mode{
   background-image: url("../public/images/clouds.jpeg");
   transition: background-image var(--transition-time);
 }
 
-body.dark{
+body.dark-mode{
   background-image: url("../public/images/moon.jpg");
   transition: background-image var(--transition-time);
 }

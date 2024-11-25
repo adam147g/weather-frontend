@@ -1,18 +1,59 @@
-#coordinates-title {
+:root {
+    --text-color-light: #00366f;
+    --text-color-dark: #ffffff;
+    --background-color-light: hsl(51, 100%, 89%, 0.3);
+    --background-color-dark: hsl(0, 0%, 14%, 0.8);
+    --button-background-light: hsla(193, 100%, 95%, 0.7);
+    --button-background-dark: hsla(0, 0%, 20%, 0.8);
+    --button-text-light: #00366f;
+    --button-text-dark: #ffffff;
+    --input-background-light: hsl(208, 100%, 57%, 10%);
+    --input-background-dark: hsl(208, 100%, 57%, 20%);
+    --border-color-light: #0660c0;
+    --border-color-dark: #ffffff;
+  }
+  
+  .light-mode {
+    --background-color: var(--background-color-light);
+    --text-color: var(--text-color-light);
+    --button-background: var(--button-background-light);
+    --button-text: var(--button-text-light);
+    --input-background: var(--input-background-light);
+    --border-color: var(--border-color-light);
+  }
+  
+  .dark-mode {
+    --background-color: var(--background-color-dark);
+    --text-color: var(--text-color-dark);
+    --button-background: var(--button-background-dark);
+    --button-text: var(--button-text-dark);
+    --input-background: var(--input-background-dark);
+    --border-color: var(--border-color-dark);
+  }
+  
+  body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+  }
+  
+  #coordinates-title {
     font-size: 30px;
-}
-
-#coordinates {
+    color: var(--text-color);
+  }
+  
+  #coordinates {
     font-size: 20px;
-}
-
-.choice {
+    color: var(--text-color);
+  }
+  
+  .choice {
     display: flex;
     justify-content: space-around;
     align-items: center;
-}
-
-.choice button {
+    margin-top: 20px;
+  }
+  
+  .choice button {
     width: 30vw;
     font-size: 25px;
     padding: 20px;
@@ -21,31 +62,36 @@
     min-width: 90px;
     text-align: center;
     margin-bottom: 30px;
-}
-
-.input-coordinates-container{
+    background-color: var(--button-background);
+    color: var(--button-text);
+    border: 3px solid var(--border-color);
+  }
+  
+  .input-coordinates-container {
     margin: 15px;
   }
-
-input {
+  
+  input {
     font-size: 15px;
     border-radius: 2px;
     min-width: 20px;
     text-align: center;
     margin-top: 30px;
     margin-left: 5px;
-    background-color: hsl(208, 100%, 57%, 10%);
-}
-
-@media (max-width: 600px) {
+    background-color: var(--input-background);
+    border: 1px solid var(--border-color);
+  }
+  
+  @media (max-width: 600px) {
     .choice button {
-        font-size: 15px;
+      font-size: 15px;
     }
-}
-
-@media (max-width: 385px) {
+  }
+  
+  @media (max-width: 385px) {
     .choice button {
-        width: 25vw;
-        font-size: 10px;
+      width: 25vw;
+      font-size: 10px;
     }
-}
+  }
+  

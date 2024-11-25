@@ -4,8 +4,11 @@ import './forecastWeather.css';
 import WeatherIcon from '../utils/weatherIcons';
 
 const ForecastWeather = ({ forecastWeather , isLightMode}) => {
+
+  const modeClass = isLightMode ? 'light-mode' : 'dark-mode';
+
     return (
-      <div className={`forecast-container ${isLightMode ? 'light' : 'dark'}`}>
+      <div className={`forecast-container ${modeClass}`}>
         <h2>Prognoza na 7 dni:</h2>
         <div className="forecast-table">
           {forecastWeather.days.map((day, index) => (
